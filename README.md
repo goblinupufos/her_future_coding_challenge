@@ -187,3 +187,92 @@ Now that the **Domain Layer** is set up, the next step is to:
 🚀 **Now the foundation is ready! Time to move forward.**
 
 ---
+
+## **🚀 Implementing the Data Layer & Persistence with SharedPreferences**
+
+Now, I will move on to implementing the **Data Layer**. This will also solve the **optional requirement of persistence** using `SharedPreferences`.
+
+For this, I will need to implement:
+
+- **Models**
+- **Data Sources**
+- **Repositories**
+
+---
+
+### **📌 Implementing the Model**
+
+I will start with the **Models**.  
+Since the app only has **one entity**, we will only need **one model**.
+
+#### **🔹 Why Do We Need a Model?**
+
+- `SharedPreferences` **only supports basic data types** like `String`, `int`, `bool`, and `List<String>`.
+- Since we are storing a **list of objects**, we need to **convert our model to JSON** before saving it.
+- Similarly, when retrieving the data, we need to **convert JSON back into our model**.
+
+✅ **Now, the app can store and retrieve history properly using JSON serialization.**
+
+---
+
+### **📌 Implementing the Local Data Source**
+
+Now, I need to create the **logic for persisting state to disk** using `SharedPreferences`.
+
+#### **🔹 Why Do We Need `PalindromeLocalDataSource`?**
+
+Even though **right now we are only using `SharedPreferences`**, I still need an **abstract class (`PalindromeLocalDataSource`)** for defining the contract of how local data should be stored.
+
+This is useful because:
+
+- If in the future I want to **store data in a database** (e.g., SQLite, Hive), I can **create another implementation** and swap it out **without modifying the repository**.
+- It **keeps the Data Layer structured and modular**.
+- It follows **Clean Architecture principles** by ensuring that the storage mechanism is not hardcoded into the repository.
+
+✅ **Now, the app has an interface for local data management, making future changes easier.**
+
+---
+
+### **📌 Implementing `PalindromeLocalDataSourceImpl`**
+
+Now, I will implement the actual **storage logic** inside `PalindromeLocalDataSourceImpl`.
+
+#### **🔹 What Will This Do?**
+
+- **Save history** by converting the list to JSON and storing it in `SharedPreferences`.
+- **Retrieve history** by fetching JSON, decoding it, and converting it back into a list of `PalindromeModel`.
+- **Clear history** by removing the saved JSON from `SharedPreferences`.
+
+✅ **Now, the app can store and retrieve history persistently.**
+
+---
+
+### **📌 Implementing the Repository (`PalindromeRepositoryImpl`)**
+
+Lastly, I need to implement the **Repository**.  
+Since the app has **only one repository** (as we defined in the **Domain Layer**), we will only have **one implementation**: `PalindromeRepositoryImpl`.
+
+#### **🔹 What Does This Do?**
+
+- It implements the **`PalindromeRepository`** interface from the **Domain Layer**.
+- It **calls the Local Data Source** to **load, save, and clear** history.
+- It ensures that the **Presentation Layer (Bloc/UI) does not interact with `SharedPreferences` directly**.
+
+✅ **Now, the Data Layer is complete and fully connected to the Domain Layer.**
+
+---
+
+### **📌 Next Steps**
+
+Now that the **Data Layer is fully implemented**, I will move on to implementing the **Presentation Layer**.  
+This includes:
+
+1. **Setting up the Bloc (State Management)**
+2. **Creating Widgets and Pages**
+3. **Connecting everything in `main.dart`**
+4. **Designing the Theme for the app**
+5. **Implementing Tests**
+
+🚀 **Now the app has working data persistence! Next, I will build the UI and state management.**
+
+---
