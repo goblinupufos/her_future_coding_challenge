@@ -276,3 +276,140 @@ This includes:
 🚀 **Now the app has working data persistence! Next, I will build the UI and state management.**
 
 ---
+
+## **🎨 Setting Up the Presentation Layer & Making the App Runnable**
+
+Now that the **Data and Domain Layers** are complete, I need to implement the **Presentation Layer** to make the app fully functional. This will allow me to test if everything is working correctly, and if there are any issues, I will be able to debug and fix them.
+
+---
+
+### **1️⃣ Creating the Theme**
+
+The first step is to create a **theme** to give the app a **consistent look**. I want the app to have a **HerFuture-inspired design**, so I carefully chose colors and styles.
+
+**Theme elements:**
+
+- `primaryColor`
+- `textColor`
+- `backgroundColor`
+- `accentColor`
+
+I also applied these colors to:
+
+- **`AppBarTheme`**
+- **`TextTheme`**
+- **`ElevatedButtonThemeData`**
+- **`InputDecorationTheme`**
+
+📝 **Note:**  
+In reality, it took some **trial and error** before finalizing these theme settings. Initially, I only set a few basic colors, but after testing different widgets, I adjusted and expanded the theme to match my vision.
+
+---
+
+### **2️⃣ Implementing the Bloc (State Management)**
+
+I chose **BLoC (Business Logic Component)** for state management because:
+
+- It is the **state management pattern I am most comfortable with**.
+- It works **well for large applications** (I have used it before successfully).
+- It was (last time I checked) **recommended by Google** for Flutter apps.
+
+#### **📌 Creating Events**
+
+I defined **four events** that the Bloc will handle:
+
+- `CheckPalindromeEvent` → Checks if the input is a palindrome and **saves** it to history.
+- `LiveCheckPalindromeEvent` → Checks live if the input is a palindrome **without saving**.
+- `ClearHistoryEvent` → Clears the **saved history**.
+- `LoadHistoryEvent` → Loads the **history from storage** when the app starts.
+
+💡 **Why two "check palindrome" events?**  
+I needed **two separate events** because:
+
+- **`CheckPalindromeEvent`** updates the **history list**.
+- **`LiveCheckPalindromeEvent`** only updates the **text below the input** in real-time, without modifying history.
+
+#### **📌 Creating States**
+
+The Bloc has **two states**:
+
+1. `PalindromeInitial` → The default state **when the app starts**.
+2. `PalindromeChecked` → Stores:
+   - The **current word** being checked.
+   - Whether the **word is a palindrome or not**.
+   - The **history list** of past checks.
+
+#### **📌 Using the Use Cases in the Bloc**
+
+Inside the Bloc, I used the **use cases from the domain layer**:
+
+- `CheckPalindrome`
+- `GetHistory`
+- `SavePalindrome`
+- `ClearHistory`
+
+These ensure that the **business logic remains separate from the UI**.
+
+---
+
+### **3️⃣ Implementing the Widgets**
+
+With the Bloc in place, I could now use it inside **widgets** for **state management**.
+
+#### **📌 InputField Widget**
+
+- **Allows user input**.
+- **Uses a `TextEditingController`** to handle the text field.
+- **Triggers `LiveCheckPalindromeEvent` on every keystroke**.
+- **Triggers `CheckPalindromeEvent` only when the check button is clicked**.
+- **Prevents empty or space-only inputs from being submitted**.
+
+📝 **Future Improvements:**
+
+- Add a **validator** to show a warning for invalid input.
+- Add a **help (`?`) button** to explain what the app does and what input is expected.
+
+#### **📌 ResultDisplay Widget**
+
+- **Displays live palindrome check results**.
+- Uses a **`BlocBuilder`** to update the UI dynamically.
+- **Hides itself if the input is empty**.
+
+#### **📌 HistoryList Widget**
+
+- **Dynamically displays the history of checked words**.
+- Uses a **`BlocBuilder`** to listen for changes.
+- Uses **`ListView.builder`** to generate the list.
+- Each item is displayed using **`ListTile`** showing:
+  - The **word**.
+  - Whether it is a **palindrome or not**.
+
+---
+
+### **4️⃣ Building the Home Page (Main Screen)**
+
+I only needed **one screen**: **`HomePage`**.  
+This screen contains:
+
+- **`InputField`**
+- **`ResultDisplay`**
+- **`HistoryList`**
+- **A "Clear History" button**
+
+This brings all the UI components together.
+
+---
+
+### **5️⃣ Connecting Everything in `main.dart`**
+
+Finally, I needed to **tie everything together** in `main.dart`.  
+This file is the **entry point** of the app, and it does the following:
+
+1. **Initializes dependencies** (like `SharedPreferences`).
+2. **Sets up the Data Layer** (`Repositories` & `Data Sources`).
+3. **Creates Use Cases** (Application Logic).
+4. **Passes dependencies to the Bloc**.
+5. **Wraps everything inside `MaterialApp`** to launch the app.
+
+🔹 **Now the app is fully functional!** 🎉  
+The next step will be **testing**.
