@@ -92,3 +92,98 @@ Now that the initial **architecture and folder structure** are in place, I will:
 4. **Write tests for critical parts of the app.**
 
 ---
+
+## **🚀 Implementing the Domain Layer**
+
+Now that I will start with the actual coding, I need to add the necessary **packages**. If needed, I will add more packages later as development progresses.
+
+I will begin by implementing the **Domain Layer**, as it is the **innermost part of the architecture** and has **no dependencies** on other layers. Here, I will need to implement:
+
+- **Entities**
+- **Repository Interfaces**
+- **Use Cases**
+
+---
+
+### **📌 Creating the `PalindromeEntity`**
+
+I will start with the **Entities**, which represent the core data models of the app.  
+For this app, I think there is **only one entity** needed: `PalindromeEntity`.
+
+#### **🔹 Why This Structure?**
+
+- **Contains the input word and a boolean** for whether it is a palindrome.
+- **Uses `Equatable`** to make comparisons easier.
+
+✅ **Now, the app has its core data model.**
+
+---
+
+### **📌 Creating the Repository Interface**
+
+Next, I will create the **Repository Interface**, which defines **what actions** the app can perform with data.
+
+For this app, the repository should:
+
+- **Save a palindrome result**
+- **Get past history**
+- **Clear history**
+
+Thus, the repository will reflect these actions.
+
+✅ **Now, the repository defines how the app should interact with data.**
+
+---
+
+### **📌 Implementing the Use Cases**
+
+Finally, I need to implement **Use Cases**, which define the app’s business logic.  
+I will start by adding **boilerplate code** for all Use Cases.
+
+#### **🔹 Why This Boilerplate?**
+
+- **Standardizes how Use Cases work**.
+- **Makes code modular and easy to extend**.
+- **Ensures all Use Cases follow the same structure**.
+
+---
+
+### **📌 Listing the Required Use Cases**
+
+Now, I will implement the **specific Use Cases** that this app needs.
+
+1. **Check if a word is a palindrome**
+
+   - This will contain the **logic for checking if an input is a palindrome**.
+   - The assignment says:
+     > _A string is a palindrome when its reverse is exactly equal to its original form. For example, “madam” is a palindrome string because its original and reverse are exactly the same. Similarly, “car” is not a palindrome because its reverse (“rac”) is not the same as its original value. Some other examples for a palindrome are: “race car”, “don’t nod”, “Anna”._
+   - However, I have made a **small modification**:
+     - Instead of filtering only alphanumeric characters, I will **consider all characters**.
+     - If I filtered everything, I might end up with `"\.,/."` being considered a palindrome, which doesn’t seem intuitive.
+     - Thus, **my implementation will keep special characters**.
+     - Example: `"don't nod"` → My app will say **this is NOT a palindrome**.
+
+2. **Clear the history**
+
+   - This one is straightforward and will remove all stored history.
+
+3. **Get the history**
+
+   - This will retrieve past results from storage.
+
+4. **Save a palindrome check**
+   - This stores a checked word in the history.
+
+---
+
+### **📌 Next Steps**
+
+Now that the **Domain Layer** is set up, the next step is to:
+
+1. **Implement the Data Layer (Repositories, Models, Local Storage).**
+2. **Connect the Data Layer with `SharedPreferences` for persistence.**
+3. **Set up the Presentation Layer (UI & Bloc) to use this logic.**
+
+🚀 **Now the foundation is ready! Time to move forward.**
+
+---
