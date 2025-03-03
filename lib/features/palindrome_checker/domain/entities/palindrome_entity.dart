@@ -7,5 +7,5 @@ class PalindromeEntity extends Equatable {
   const PalindromeEntity({required this.word, required this.isPalindrome});
 
   @override
-  List<Object?> get props => [word, isPalindrome]; // ✅ Fix: Ensure proper comparisons
+  List<Object?> get props => [word, isPalindrome];
 }
